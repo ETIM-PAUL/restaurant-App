@@ -1,8 +1,8 @@
 # dependencies
 /node_modules
 
-/env.development
-/env.test
+.env.development
+.env.test
 
 #OS
 .DS_Store
