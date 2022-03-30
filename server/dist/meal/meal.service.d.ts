@@ -11,4 +11,5 @@ export declare class MealService {
     findMealById(id: string): Promise<Meal>;
     create(meal: Meal, user: User): Promise<Meal>;
     updateById(id: string, meal: Meal): Promise<Meal>;
+    deleteById(id: string): Promise<Meal>;
 }

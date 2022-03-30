@@ -26,11 +26,11 @@ __decorate([
 exports.Location = Location;
 var Category;
 (function (Category) {
-    Category["Fast_Food"] = "Fast Food";
+    Category["FastFood"] = "Fast Food";
     Category["Cafe"] = "Cafe";
     Category["Dinning"] = "Dinning";
-    Category["Cuisine_Restaurant"] = "Cuisines Restaurants";
-    Category["Seafood_Restaurant"] = "Seaside Restaurants";
+    Category["Cuisine"] = "Cuisine";
+    Category["Seafood"] = "Seafood";
 })(Category = exports.Category || (exports.Category = {}));
 let Restaurant = class Restaurant {
 };
@@ -74,6 +74,10 @@ __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", Array)
 ], Restaurant.prototype, "images", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ timestamps: true }),
+    __metadata("design:type", Array)
+], Restaurant.prototype, "reviews", void 0);
 __decorate([
     (0, mongoose_1.Prop)([{ type: Object, ref: 'Location' }]),
     __metadata("design:type", Location)

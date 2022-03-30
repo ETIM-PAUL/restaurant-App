@@ -23,7 +23,12 @@ export class MealService {
 
   //Get all meals of restaurant
   async findMealsForRestaurant(id: string): Promise<Meal[]> {
-    const meals = await this.mealModel.find({ restaurants:id });
+    const isValid = mongoose.isValidObjectId(id);
+
+    if(!isValid){
+      throw new BadRequestException("Wrong mongoose ID error")
+    }
+    const meals = await this.mealModel.find({ restaurant:id });
     return meals
   }
 
@@ -64,7 +69,7 @@ export class MealService {
     }
    
     // Check ownership of the restaurant
-    if (restaurant.user.toString() ! == user._id) {
+    if (restaurant.user.toString() !== user._id.toString()) {
       throw new ForbiddenException('You cannot add meal to this Restaurant')
     }
 
@@ -83,6 +88,15 @@ export class MealService {
       new: true,
       runValidators: true
     })
+  }
+
+  //Delete Meal by id
+  async deleteById(id:string): Promise<Meal> {
+    const meal = this.mealModel.findById(id)
+    const restId = (await meal).restaurant
+    const rest = this.restaurantModel.findById(restId)
+    await this.restaurantModel.updateMany({}, { $pull:{menu: id}})
+    return await this.mealModel.findByIdAndDelete(id)
   }
 
 }

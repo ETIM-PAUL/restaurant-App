@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { Request, response, Response } from 'express';
 import { AuthenticationService } from './authentication.service';
 import { LoginUserDto } from './dto/login.dto';
@@ -13,6 +13,18 @@ export class AuthenticationController {
   @Post('/register')
   signup(@Body() createUserDto: CreateUserDto): Promise<{ token: string }> {
     return this.authService.createUser(createUserDto);
+  }
+
+  //Get all users
+  @Get('/users')
+  getUsers(): Promise<User[]> {
+    return this.authService.findAll();
+  }
+
+  //Get user by id
+  @Get(':id')
+  getUser(@Param('id')id:string): Promise<User> {
+    return this.authService.findOne(id)
   }
 
   //Login User

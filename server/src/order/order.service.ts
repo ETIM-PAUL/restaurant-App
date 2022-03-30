@@ -26,12 +26,35 @@ export class OrderService {
   
     //Get all order of restaurant
     async findOrderForRestaurant(id: string): Promise<Order[]> {
-      const orders = await this.orderModel.find({ restaurants:id });
+      const isValid = mongoose.isValidObjectId(id);
+  
+      if(!isValid){
+        throw new BadRequestException("Wrong mongoose ID error")
+      }
+      const orders = await this.orderModel.find({ restaurant:id });
       return orders
+    }
+
+    //Get orders for user
+    async findOrdersForUser(id: string): Promise<Order[]> {
+      const isValid = mongoose.isValidObjectId(id);
+  
+      if(!isValid){
+        throw new BadRequestException("Wrong mongoose ID error")
+      }
+      const orders = await this.orderModel.find({ user:id });
+      const rest = await this.restaurantModel.findOne({ orders });
+      return (orders)
     }
 
     //Get all order of meal
     async findOrderForMeal(id: string): Promise<Order[]> {
+      const isValid = mongoose.isValidObjectId(id);
+  
+      if(!isValid){
+        throw new BadRequestException("Wrong mongoose ID error")
+      }
+
       const orders = await this.orderModel.find({ meal:id });
       return orders
     }
@@ -85,7 +108,7 @@ export class OrderService {
       throw new NotFoundException("Restaurant doesn't exist")
     }
    
-    // Check ownership of the restaurant
+    // Check if restaurant takes orders
     if (restaurant.orderOut === false) {
       throw new ForbiddenException('This Restaurant doesnt take external orders')
     }
@@ -98,4 +121,19 @@ export class OrderService {
 
     return orderCreated;
   }
+
+   //Delete order by id
+   async deleteById(id:string): Promise<Order> {
+    return await this.orderModel.findByIdAndDelete(id)
+  }
+
+   //Update order by id
+   async updateById(id:string, order: Order): Promise<Order>{
+    return await this.orderModel.findByIdAndUpdate(id, order, {
+      new: true,
+      runValidators: true
+    })
+  }
+
+  
 }

@@ -42,17 +42,6 @@ export const CreateRestaurant = ({ token }) => {
     };
 
     try {
-      console.log({
-        name,
-        description,
-        officialChef,
-        reservations,
-        orderOut,
-        email,
-        contactNo,
-        address,
-        category,
-      });
       const { data } = await axios.post(
         `http://localhost:5000/restaurants`,
         {
@@ -124,7 +113,8 @@ export const CreateRestaurant = ({ token }) => {
 
             <Form.Item>
               Address (Please fill a correct address, if possible include a zip
-              code. To display your location on Google Map. e.g )
+              code. To display your location on Google Map. e.g House Number,
+              Street Name, City State, Postal Code )
               <Input
                 value={address}
                 size="large"
@@ -146,12 +136,7 @@ export const CreateRestaurant = ({ token }) => {
             <Form.Item>
               Order Out (Please select True, if your Restaurant takes External
               Orders. Otherwise, select False)
-              <Select
-                value={orderOut}
-                size="large"
-                defaultValue={false}
-                onChange={clickedOrder}
-              >
+              <Select value={orderOut} size="large" onChange={clickedOrder}>
                 <Select.Option value={true}>True</Select.Option>
                 <Select.Option value={false}>False</Select.Option>
               </Select>
@@ -160,12 +145,7 @@ export const CreateRestaurant = ({ token }) => {
             <Form.Item>
               Reservations (Please select True, if your Restaurant takes
               Reservations. Otherwise, select False)
-              <Select
-                value={reservations}
-                size="large"
-                defaultValue={false}
-                onChange={clickedRes}
-              >
+              <Select value={reservations} size="large" onChange={clickedRes}>
                 <Select.Option value={true}>True</Select.Option>
                 <Select.Option value={false}>False</Select.Option>
               </Select>
@@ -179,15 +159,11 @@ export const CreateRestaurant = ({ token }) => {
                 defaultValue="Dinning"
                 onChange={clickedCategory}
               >
-                <Select.Option value="Fast_Food">Fast Food</Select.Option>
+                <Select.Option value="Fast Food">Fast Food</Select.Option>
                 <Select.Option value="Cafe">Cafe</Select.Option>
                 <Select.Option value="Dinning">Dinning</Select.Option>
-                <Select.Option value="Cuisine_Restaurant">
-                  Cuisine{" "}
-                </Select.Option>
-                <Select.Option value="Seafood_Restaurant">
-                  Seafood
-                </Select.Option>
+                <Select.Option value="Cuisine">Cuisine </Select.Option>
+                <Select.Option value="Seafood">Seafood</Select.Option>
               </Select>
             </Form.Item>
 

@@ -20,7 +20,7 @@ const Login = () => {
   } = useContext(Context);
 
   useEffect(() => {
-    if (user !== null) Router.push("/dashboard");
+    if (user !== null) Router.push("/");
   }, [user]);
 
   const loginUser = async () => {
@@ -37,9 +37,13 @@ const Login = () => {
         type: "LOGIN",
         payload: data,
       });
+      dispatch({
+        type: "SETUSER",
+        payload: data.userdetails,
+      });
       window.localStorage.setItem("user", JSON.stringify(data));
-      Router.push("/dashboard");
-      toast("Login successfull");
+      Router.push("/");
+      location.reload();
     } catch (error) {
       toast(error.response.data.message);
       console.log(error.request);

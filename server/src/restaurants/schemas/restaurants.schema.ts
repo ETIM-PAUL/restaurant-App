@@ -1,5 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { timestamp } from 'rxjs';
 import { User } from '../../authentication/schema/user.schema';
 import { Meal } from '../../meal/schema/meal.schema';
 import { Order} from '../../order/schema/order.schema'
@@ -19,11 +20,11 @@ export class Location {
 }
 
 export enum Category {
-  Fast_Food = 'Fast Food',
+  FastFood = 'Fast Food',
   Cafe = 'Cafe',
   Dinning = 'Dinning',
-  Cuisine_Restaurant = 'Cuisines Restaurants',
-  Seafood_Restaurant = 'Seaside Restaurants',
+  Cuisine = 'Cuisine',
+  Seafood = 'Seafood',
 }
 
 @Schema({
@@ -59,6 +60,9 @@ export class Restaurant {
 
   @Prop()
   images?: object[];
+
+  @Prop({timestamps:true})
+  reviews?: object[];
 
   @Prop([{ type: Object, ref: 'Location' }])
   location?: Location;

@@ -12,6 +12,10 @@ export class CreateOrderDto {
   readonly portions:number
   
   @IsNotEmpty()
+  @IsNumber()
+  readonly amount:number
+  
+  @IsNotEmpty()
   @IsString()
   readonly description:string
 

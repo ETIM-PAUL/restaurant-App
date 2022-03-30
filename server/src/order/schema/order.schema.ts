@@ -3,9 +3,10 @@ import * as mongoose from "mongoose";
 import { User } from "../../authentication/schema/user.schema";
 
 export enum Status {
-  "PENDING"="Pending",
-  "Ongoing"="Ongoing",
-  "Completed"="Completed",
+  Pending="Pending",
+  Ongoing="Ongoing",
+  Completed="Completed",
+  Delivered="Delivered",
 }
 @Schema({
   timestamps:true
@@ -22,6 +23,9 @@ export class Order {
 
   @Prop()
   status:Status
+
+  @Prop()
+  amount:number
   
   @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Meal'})
   meal: string

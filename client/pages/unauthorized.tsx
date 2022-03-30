@@ -8,7 +8,6 @@ import { Context } from "./context";
 const UnAuthorized = () => {
   const {
     state: { user },
-    dispatch,
   } = useContext(Context);
 
   useEffect(() => {

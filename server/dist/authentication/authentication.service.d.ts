@@ -7,6 +7,8 @@ export declare class AuthenticationService {
     private userModel;
     private jwtService;
     constructor(userModel: mongoose.Model<User>, jwtService: JwtService);
+    findAll(): Promise<User[]>;
+    findOne(id: string): Promise<User>;
     createUser(createUserDto: CreateUserDto): Promise<{
         token: string;
     }>;

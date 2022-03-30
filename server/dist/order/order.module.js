@@ -24,11 +24,12 @@ OrderModule = __decorate([
             mongoose_1.MongooseModule.forFeature([
                 { name: 'Order', schema: order_schema_1.OrderSchema }
             ]),
-            restaurants_module_1.RestaurantsModule,
+            (0, common_1.forwardRef)(() => restaurants_module_1.RestaurantsModule),
             meal_module_1.MealModule,
         ],
         controllers: [order_controller_1.OrderController],
-        providers: [order_service_1.OrderService]
+        providers: [order_service_1.OrderService],
+        exports: [mongoose_1.MongooseModule]
     })
 ], OrderModule);
 exports.OrderModule = OrderModule;

@@ -15,9 +15,10 @@ const mongoose = require("mongoose");
 const user_schema_1 = require("../../authentication/schema/user.schema");
 var Status;
 (function (Status) {
-    Status["PENDING"] = "Pending";
+    Status["Pending"] = "Pending";
     Status["Ongoing"] = "Ongoing";
     Status["Completed"] = "Completed";
+    Status["Delivered"] = "Delivered";
 })(Status = exports.Status || (exports.Status = {}));
 let Order = class Order {
 };
@@ -37,6 +38,10 @@ __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Order.prototype, "status", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", Number)
+], Order.prototype, "amount", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose.Schema.Types.ObjectId, ref: 'Meal' }),
     __metadata("design:type", String)

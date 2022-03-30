@@ -3,6 +3,7 @@ import { Status } from "../schema/order.schema";
 export declare class CreateOrderDto {
     readonly name: string;
     readonly portions: number;
+    readonly amount: number;
     readonly description: string;
     readonly status: Status;
     readonly restaurant: string;

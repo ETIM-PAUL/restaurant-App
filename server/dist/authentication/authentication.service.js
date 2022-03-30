@@ -25,8 +25,23 @@ let AuthenticationService = class AuthenticationService {
         this.userModel = userModel;
         this.jwtService = jwtService;
     }
+    async findAll() {
+        const users = await this.userModel.find();
+        return users;
+    }
+    async findOne(id) {
+        const isValid = mongoose_2.default.isValidObjectId(id);
+        if (!isValid) {
+            throw new common_1.BadRequestException("Wrong mongoose ID error");
+        }
+        const user = await this.userModel.findById(id);
+        if (!user) {
+            throw new common_1.NotFoundException("User Not Found");
+        }
+        return user;
+    }
     async createUser(createUserDto) {
-        const { name, email, password, address, contactNo } = createUserDto;
+        const { name, email, password, address, contactNo, role } = createUserDto;
         const hashedPassword = await bcrypt.hash(password, 10);
         try {
             const user = await this.userModel.create({
@@ -35,6 +50,7 @@ let AuthenticationService = class AuthenticationService {
                 password: hashedPassword,
                 contactNo,
                 address,
+                role,
             });
             const token = await mapFeat_1.default.assignJwtToken(user.id, this.jwtService);
             return { token };
@@ -58,7 +74,6 @@ let AuthenticationService = class AuthenticationService {
         }
         user.password = undefined;
         const userdetails = user;
-        console.log(userdetails);
         const token = await mapFeat_1.default.assignJwtToken(user.id, this.jwtService);
         return ({ token, userdetails });
     }

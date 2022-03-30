@@ -24,6 +24,12 @@ let AuthenticationController = class AuthenticationController {
     signup(createUserDto) {
         return this.authService.createUser(createUserDto);
     }
+    getUsers() {
+        return this.authService.findAll();
+    }
+    getUser(id) {
+        return this.authService.findOne(id);
+    }
     async login(response, request, loginUserDto) {
         response.cookie('token', (await this.authService.loginUser(loginUserDto)).token, {
             httpOnly: true,
@@ -48,6 +54,19 @@ __decorate([
     __metadata("design:paramtypes", [user_signup_dto_1.CreateUserDto]),
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "signup", null);
+__decorate([
+    (0, common_1.Get)('/users'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "getUsers", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "getUser", null);
 __decorate([
     (0, common_1.Post)('/login'),
     __param(0, (0, common_1.Res)({ passthrough: true })),

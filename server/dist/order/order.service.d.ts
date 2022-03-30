@@ -10,7 +10,10 @@ export declare class OrderService {
     constructor(orderModel: mongoose.Model<Order>, restaurantModel: mongoose.Model<Restaurant>, mealModel: mongoose.Model<Meal>);
     findAll(): Promise<Order[]>;
     findOrderForRestaurant(id: string): Promise<Order[]>;
+    findOrdersForUser(id: string): Promise<Order[]>;
     findOrderForMeal(id: string): Promise<Order[]>;
     findOrderById(id: string): Promise<Order>;
     create(order: Order, user: User): Promise<Order>;
+    deleteById(id: string): Promise<Order>;
+    updateById(id: string, order: Order): Promise<Order>;
 }

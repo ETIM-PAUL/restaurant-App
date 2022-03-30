@@ -28,7 +28,11 @@ let MealService = class MealService {
         return meals;
     }
     async findMealsForRestaurant(id) {
-        const meals = await this.mealModel.find({ restaurants: id });
+        const isValid = mongoose.isValidObjectId(id);
+        if (!isValid) {
+            throw new common_1.BadRequestException("Wrong mongoose ID error");
+        }
+        const meals = await this.mealModel.find({ restaurant: id });
         return meals;
     }
     async findMealById(id) {
@@ -54,7 +58,7 @@ let MealService = class MealService {
         if (!restaurant) {
             throw new common_1.NotFoundException("Restaurant doesn't exist");
         }
-        if (restaurant.user.toString() == user._id) {
+        if (restaurant.user.toString() !== user._id.toString()) {
             throw new common_1.ForbiddenException('You cannot add meal to this Restaurant');
         }
         const mealCreated = await this.mealModel.create(data);
@@ -67,6 +71,13 @@ let MealService = class MealService {
             new: true,
             runValidators: true
         });
+    }
+    async deleteById(id) {
+        const meal = this.mealModel.findById(id);
+        const restId = (await meal).restaurant;
+        const rest = this.restaurantModel.findById(restId);
+        await this.restaurantModel.updateMany({}, { $pull: { menu: id } });
+        return await this.mealModel.findByIdAndDelete(id);
     }
 };
 MealService = __decorate([

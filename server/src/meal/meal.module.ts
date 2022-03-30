@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthenticationModule } from 'src/authentication/authentication.module';
 import { RestaurantsModule } from 'src/restaurants/restaurants.module';
@@ -11,7 +11,8 @@ import { MealSchema } from './schema/meal.schema';
     AuthenticationModule,
     MongooseModule.forFeature([
       { name: 'Meal', schema: MealSchema}]),
-    RestaurantsModule,
+      forwardRef(() => RestaurantsModule)
+
   ],
   controllers: [MealController],
   providers: [MealService],

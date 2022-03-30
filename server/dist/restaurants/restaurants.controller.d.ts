@@ -15,11 +15,16 @@ export declare class RestaurantsController {
     getAllRestaurants(query: ExpressQuery): Promise<Restaurant[]>;
     createRestaurant(restaurant: CreateRestaurantDto, user: User): Promise<Restaurant>;
     getRestaurant(id: string): Promise<Restaurant>;
+    getOrdersByUser(id: string): Promise<Restaurant[]>;
     updateRestaurant(id: string, restaurant: UpdateRestaurantDto, user: User): Promise<Restaurant>;
     deleteRestaurant(id: string, user: User): Promise<{
+        deleted: boolean;
+    }>;
+    deleteRetaurantImages(id: string): Promise<{
         deleted: boolean;
     }>;
     uploadedFiles(id: string, files: Array<Express.Multer.File>): Promise<import("mongoose").Document<unknown, any, Restaurant> & Restaurant & {
         _id: import("mongoose").Types.ObjectId;
     }>;
+    review(id: string, review: UpdateRestaurantDto, user: User): Promise<Restaurant>;
 }

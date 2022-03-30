@@ -1,6 +1,8 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -21,9 +23,32 @@ export class AuthenticationService {
     private jwtService: JwtService,
   ) {}
 
+  //get all users
+  async findAll(): Promise<User[]> {
+    const users = await this.userModel.find()
+    return users
+  }
+
+  //get all users
+  async findOne(id:string): Promise<User> {
+    const isValid = mongoose.isValidObjectId(id);
+
+    if(!isValid){
+      throw new BadRequestException("Wrong mongoose ID error")
+    }
+    
+    const user = await this.userModel.findById(id)
+
+    if(!user) {
+      throw new NotFoundException("User Not Found")
+    }
+
+    return user
+  }
+
   // Register User
   async createUser(createUserDto: CreateUserDto): Promise<{ token: string }> {
-    const { name, email, password, address, contactNo } = createUserDto;
+    const { name, email, password, address, contactNo,role } = createUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
@@ -33,6 +58,7 @@ export class AuthenticationService {
         password: hashedPassword,
         contactNo,
         address,
+        role,
       });
       const token = await MAPFeature.assignJwtToken(user.id, this.jwtService);
 
@@ -64,7 +90,6 @@ export class AuthenticationService {
 
     user.password =undefined
     const userdetails = user 
-    console.log(userdetails)
     const token = await MAPFeature.assignJwtToken(user.id, this.jwtService);
     return ({ token,userdetails });
     

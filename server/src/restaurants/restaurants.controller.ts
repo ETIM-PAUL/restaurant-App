@@ -5,6 +5,7 @@ import {
   ForbiddenException,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Query,
@@ -53,6 +54,11 @@ export class RestaurantsController {
     return this.restaurantsService.findById(id);
   }
 
+  @Get('user/:id')
+  async getOrdersByUser(@Param('id') id: string): Promise<Restaurant[]> {
+    return this.restaurantsService.findRestaurantForUser(id)
+  }
+
   @Put(':id')
   @UseGuards(AuthGuard(), RolesGuard)
   @Roles("admin","owner")
@@ -67,11 +73,17 @@ export class RestaurantsController {
    if(res.user.toString() !== user._id.toString()) {
      throw new ForbiddenException("You are not the owner of this Restaurant");
    }
+   const filterProps = await this.restaurantsService.findById(id);
+   (function() {
+     Object.keys(restaurant).forEach((key)=> (restaurant[key] === filterProps[key] || restaurant[key] === '') && delete restaurant[key])
+   })()
+   
     return this.restaurantsService.updateById(id, restaurant);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard(), RolesGuard)
+  @Roles("owner","admin")
   async deleteRestaurant(
     @Param('id')
     id: string,
@@ -79,8 +91,8 @@ export class RestaurantsController {
   ): Promise<{ deleted: boolean }> {
     const restaurant = await this.restaurantsService.findById(id);
 
-    if(restaurant.user.toString() !== user._id) {
-      throw new ForbiddenException("You cannot delete this restaurant");
+    if(restaurant.user.toString() !== user._id.toString()) {
+      throw new ForbiddenException("You are not the owner of this restaurant");
     }
     const imageDelete = await this.restaurantsService.deleteImages(
       restaurant.images,
@@ -98,9 +110,30 @@ export class RestaurantsController {
     }
   }
 
+  @Delete('/image-delete/:id')
+  async deleteRetaurantImages(
+    @Param('id') id: string
+  ): Promise<{ deleted: boolean }> {
+    const restaurant = await this.restaurantsService.findById(id);
+    const imageDelete = await this.restaurantsService.deleteImagesInDB(id)
+    if (imageDelete) {
+      this.restaurantsService.deleteImages(
+        restaurant.images,
+      );
+      return {
+        deleted: true,
+      };
+    } else {
+      return {
+        deleted: true,
+      };
+    }
+  }
+
   @Put('upload/:id')
-  @UseGuards(AuthGuard(), RolesGuard)
-  @UseInterceptors(FilesInterceptor('files'))
+  // @UseGuards(RolesGuard)
+  // @Roles("owner","admin")
+  @UseInterceptors(FilesInterceptor('files', 2))
   async uploadedFiles(
     @Param('id') id: string,
     @UploadedFiles() files: Array<Express.Multer.File>,
@@ -108,6 +141,22 @@ export class RestaurantsController {
     await this.restaurantsService.findById(id);
 
     const res = await this.restaurantsService.uploadImages(id, files);
+    return res;
+  }
+
+  @Put('reviews/:id')
+  @UseGuards(AuthGuard(),RolesGuard)
+  @Roles("user")
+  async review(
+    @Param('id')
+    id: string,
+    @Body()
+    review: UpdateRestaurantDto,
+    @CurrentUser() user: User,
+  ) {
+    await this.restaurantsService.findById(id);
+
+    const res = await this.restaurantsService.review(id,review,user)
     return res;
   }
 }

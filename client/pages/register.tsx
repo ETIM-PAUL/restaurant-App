@@ -8,6 +8,7 @@ import {
   InputNumber,
   Button,
   Checkbox,
+  Select,
 } from "antd";
 import Link from "next/link";
 import { AiTwotoneEyeInvisible, AiTwotoneEye } from "react-icons/ai";
@@ -28,13 +29,18 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [contactNo, setContactNo] = useState("");
+  const [role, setRole] = useState("");
 
+  const clickedCategory = (value: string) => {
+    setRole(value);
+  };
+  // console.log(category);
   useEffect(() => {
     if (user !== null) Router.push("/");
   }, [user]);
 
   const addUser = async (e: { preventDefault: () => void }) => {
-    console.log({ name, contactNo });
+    console.log({ name, role });
     try {
       const { data } = await axios.post(
         `http://localhost:5000/authentication/register`,
@@ -44,7 +50,7 @@ const Login = () => {
           password,
           address,
           contactNo,
-          role: "admin",
+          role,
         }
       );
       toast.success("Registration successful. Please login");
@@ -52,7 +58,7 @@ const Login = () => {
     } catch (error) {
       console.log(error.response);
       toast.error(
-        error.response.data.message[0] && error.response.data.message
+        error.response.data.message[0] || error.response.data.message
       );
     }
   };
@@ -149,6 +155,19 @@ const Login = () => {
                   onChange={(e) => setContactNo(e.target.value)}
                 />
               </Tooltip>
+            </Form.Item>
+
+            <Form.Item name="number">
+              <Select
+                value={role}
+                placeholder="Select Role"
+                size="large"
+                style={{ width: "400px" }}
+                onChange={clickedCategory}
+              >
+                <Select.Option value="user">Customer</Select.Option>
+                <Select.Option value="owner">Restaurant Owner</Select.Option>
+              </Select>
             </Form.Item>
 
             <Form.Item>

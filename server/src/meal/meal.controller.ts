@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/authentication/decorators/roles.decorator';
 import { RolesGuard } from 'src/authentication/guards/roles.guard';
@@ -42,14 +42,31 @@ return this.mealService.findAll()
   @Put(':id')
   @UseGuards(AuthGuard(), RolesGuard)
   @Roles("admin","owner")
-  @Roles()
   async updateMeal(@Body() updateMealDto: UpdateMealDto, @Param('id') id: string, @CurrentUser() user:User): Promise<Meal> {
     const meal = await this.mealService.findMealById(id);
 
     if(meal.user.toString() !== user._id.toString()) {
-      throw new ForbiddenException("You are not the owner of this Restaurant");
+      throw new ForbiddenException("You dont own the Restaurant that has this meal");
   }
 
   return this.mealService.updateById(id, updateMealDto)
   }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard(), RolesGuard)
+  @Roles("admin","owner")
+  async deleteMeal(@Param('id') id: string, @CurrentUser() user:User): Promise<{ deleted: boolean }> {
+    const meal = await this.mealService.findMealById(id);
+    
+    if(meal.user.toString() !== user._id.toString()) {
+      throw new ForbiddenException("You dont own the Restaurant that has this meal");
+  }
+
+  this.mealService.deleteById(id)
+  return {
+    deleted: true,
+  };
+    
+  }
+
 }

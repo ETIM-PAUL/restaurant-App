@@ -12,11 +12,11 @@ export declare class Location {
     country: string;
 }
 export declare enum Category {
-    Fast_Food = "Fast Food",
+    FastFood = "Fast Food",
     Cafe = "Cafe",
     Dinning = "Dinning",
-    Cuisine_Restaurant = "Cuisines Restaurants",
-    Seafood_Restaurant = "Seaside Restaurants"
+    Cuisine = "Cuisine",
+    Seafood = "Seafood"
 }
 export declare class Restaurant {
     name: string;
@@ -29,6 +29,7 @@ export declare class Restaurant {
     address: string;
     category: Category;
     images?: object[];
+    reviews?: object[];
     location?: Location;
     menu?: Meal[];
     order?: Order[];

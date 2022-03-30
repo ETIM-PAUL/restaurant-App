@@ -41,9 +41,19 @@ let MealController = class MealController {
     async updateMeal(updateMealDto, id, user) {
         const meal = await this.mealService.findMealById(id);
         if (meal.user.toString() !== user._id.toString()) {
-            throw new common_1.ForbiddenException("You are not the owner of this Restaurant");
+            throw new common_1.ForbiddenException("You dont own the Restaurant that has this meal");
         }
         return this.mealService.updateById(id, updateMealDto);
+    }
+    async deleteMeal(id, user) {
+        const meal = await this.mealService.findMealById(id);
+        if (meal.user.toString() !== user._id.toString()) {
+            throw new common_1.ForbiddenException("You dont own the Restaurant that has this meal");
+        }
+        this.mealService.deleteById(id);
+        return {
+            deleted: true,
+        };
     }
 };
 __decorate([
@@ -81,7 +91,6 @@ __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)(), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)("admin", "owner"),
-    (0, roles_decorator_1.Roles)(),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('id')),
     __param(2, (0, current_user_decorator_1.CurrentUser)()),
@@ -89,6 +98,16 @@ __decorate([
     __metadata("design:paramtypes", [updateMeal_dto_1.UpdateMealDto, String, user_schema_1.User]),
     __metadata("design:returntype", Promise)
 ], MealController.prototype, "updateMeal", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)(), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)("admin", "owner"),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, user_schema_1.User]),
+    __metadata("design:returntype", Promise)
+], MealController.prototype, "deleteMeal", null);
 MealController = __decorate([
     (0, common_1.Controller)('meals'),
     __metadata("design:paramtypes", [meal_service_1.MealService])

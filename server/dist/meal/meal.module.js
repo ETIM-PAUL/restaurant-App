@@ -23,7 +23,7 @@ MealModule = __decorate([
             mongoose_1.MongooseModule.forFeature([
                 { name: 'Meal', schema: meal_schema_1.MealSchema }
             ]),
-            restaurants_module_1.RestaurantsModule,
+            (0, common_1.forwardRef)(() => restaurants_module_1.RestaurantsModule)
         ],
         controllers: [meal_controller_1.MealController],
         providers: [meal_service_1.MealService],

@@ -30,10 +30,27 @@ let OrderService = class OrderService {
         return orders;
     }
     async findOrderForRestaurant(id) {
-        const orders = await this.orderModel.find({ restaurants: id });
+        const isValid = mongoose_2.default.isValidObjectId(id);
+        if (!isValid) {
+            throw new common_1.BadRequestException("Wrong mongoose ID error");
+        }
+        const orders = await this.orderModel.find({ restaurant: id });
         return orders;
     }
+    async findOrdersForUser(id) {
+        const isValid = mongoose_2.default.isValidObjectId(id);
+        if (!isValid) {
+            throw new common_1.BadRequestException("Wrong mongoose ID error");
+        }
+        const orders = await this.orderModel.find({ user: id });
+        const rest = await this.restaurantModel.findOne({ orders });
+        return (orders);
+    }
     async findOrderForMeal(id) {
+        const isValid = mongoose_2.default.isValidObjectId(id);
+        if (!isValid) {
+            throw new common_1.BadRequestException("Wrong mongoose ID error");
+        }
         const orders = await this.orderModel.find({ meal: id });
         return orders;
     }
@@ -75,6 +92,15 @@ let OrderService = class OrderService {
         restaurant.order.push(orderCreated.id);
         await restaurant.save();
         return orderCreated;
+    }
+    async deleteById(id) {
+        return await this.orderModel.findByIdAndDelete(id);
+    }
+    async updateById(id, order) {
+        return await this.orderModel.findByIdAndUpdate(id, order, {
+            new: true,
+            runValidators: true
+        });
     }
 };
 OrderService = __decorate([

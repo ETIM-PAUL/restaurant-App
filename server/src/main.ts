@@ -3,10 +3,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser'
 // import * as csrf from 'csurf'
-// import * as bodyParser from 'body-parser'
+import {json} from 'body-parser'
 
 async function bootstrap() {
+
   const app = await NestFactory.create(AppModule);
+  app.use(json({ limit: "5mb"}))
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors()
   app.use(cookieParser())

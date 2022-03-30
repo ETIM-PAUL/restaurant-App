@@ -36,17 +36,24 @@ let RestaurantsController = class RestaurantsController {
     async getRestaurant(id) {
         return this.restaurantsService.findById(id);
     }
+    async getOrdersByUser(id) {
+        return this.restaurantsService.findRestaurantForUser(id);
+    }
     async updateRestaurant(id, restaurant, user) {
         const res = await this.restaurantsService.findById(id);
         if (res.user.toString() !== user._id.toString()) {
             throw new common_1.ForbiddenException("You are not the owner of this Restaurant");
         }
+        const filterProps = await this.restaurantsService.findById(id);
+        (function () {
+            Object.keys(restaurant).forEach((key) => (restaurant[key] === filterProps[key] || restaurant[key] === '') && delete restaurant[key]);
+        })();
         return this.restaurantsService.updateById(id, restaurant);
     }
     async deleteRestaurant(id, user) {
         const restaurant = await this.restaurantsService.findById(id);
-        if (restaurant.user.toString() !== user._id) {
-            throw new common_1.ForbiddenException("You cannot delete this restaurant");
+        if (restaurant.user.toString() !== user._id.toString()) {
+            throw new common_1.ForbiddenException("You are not the owner of this restaurant");
         }
         const imageDelete = await this.restaurantsService.deleteImages(restaurant.images);
         if (imageDelete) {
@@ -61,9 +68,29 @@ let RestaurantsController = class RestaurantsController {
             };
         }
     }
+    async deleteRetaurantImages(id) {
+        const restaurant = await this.restaurantsService.findById(id);
+        const imageDelete = await this.restaurantsService.deleteImagesInDB(id);
+        if (imageDelete) {
+            this.restaurantsService.deleteImages(restaurant.images);
+            return {
+                deleted: true,
+            };
+        }
+        else {
+            return {
+                deleted: true,
+            };
+        }
+    }
     async uploadedFiles(id, files) {
         await this.restaurantsService.findById(id);
         const res = await this.restaurantsService.uploadImages(id, files);
+        return res;
+    }
+    async review(id, review, user) {
+        await this.restaurantsService.findById(id);
+        const res = await this.restaurantsService.review(id, review, user);
         return res;
     }
 };
@@ -93,6 +120,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RestaurantsController.prototype, "getRestaurant", null);
 __decorate([
+    (0, common_1.Get)('user/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], RestaurantsController.prototype, "getOrdersByUser", null);
+__decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)(), roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)("admin", "owner"),
@@ -107,6 +141,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)(), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)("owner", "admin"),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
@@ -114,15 +149,33 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RestaurantsController.prototype, "deleteRestaurant", null);
 __decorate([
+    (0, common_1.Delete)('/image-delete/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], RestaurantsController.prototype, "deleteRetaurantImages", null);
+__decorate([
     (0, common_1.Put)('upload/:id'),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)(), roles_guard_1.RolesGuard),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('files')),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('files', 2)),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Array]),
     __metadata("design:returntype", Promise)
 ], RestaurantsController.prototype, "uploadedFiles", null);
+__decorate([
+    (0, common_1.Put)('reviews/:id'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)(), roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)("user"),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_restaurants_ddo_1.UpdateRestaurantDto,
+        user_schema_1.User]),
+    __metadata("design:returntype", Promise)
+], RestaurantsController.prototype, "review", null);
 RestaurantsController = __decorate([
     (0, common_1.Controller)('restaurants'),
     __metadata("design:paramtypes", [restaurants_service_1.RestaurantsService])

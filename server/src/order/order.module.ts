@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthenticationModule } from '../authentication/authentication.module';
 import { RestaurantsModule } from '../restaurants/restaurants.module';
@@ -12,10 +12,12 @@ import { OrderSchema } from './schema/order.schema';
     AuthenticationModule,
     MongooseModule.forFeature([
       { name: 'Order', schema: OrderSchema}]),
-    RestaurantsModule,
+      forwardRef(() => RestaurantsModule),
+    
     MealModule,
   ],
   controllers: [OrderController],
-  providers: [OrderService]
+  providers: [OrderService],
+  exports: [MongooseModule]
 })
 export class OrderModule {}

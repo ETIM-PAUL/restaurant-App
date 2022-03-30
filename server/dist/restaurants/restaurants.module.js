@@ -10,6 +10,8 @@ exports.RestaurantsModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const authentication_module_1 = require("../authentication/authentication.module");
+const meal_module_1 = require("../meal/meal.module");
+const order_module_1 = require("../order/order.module");
 const restaurants_controller_1 = require("./restaurants.controller");
 const restaurants_service_1 = require("./restaurants.service");
 const restaurants_schema_1 = require("./schemas/restaurants.schema");
@@ -22,6 +24,8 @@ RestaurantsModule = __decorate([
             mongoose_1.MongooseModule.forFeature([
                 { name: 'Restaurant', schema: restaurants_schema_1.RestaurantSchema },
             ]),
+            (0, common_1.forwardRef)(() => order_module_1.OrderModule),
+            (0, common_1.forwardRef)(() => meal_module_1.MealModule),
         ],
         controllers: [restaurants_controller_1.RestaurantsController],
         providers: [restaurants_service_1.RestaurantsService],

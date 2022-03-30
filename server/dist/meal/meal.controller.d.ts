@@ -11,4 +11,7 @@ export declare class MealController {
     getMealById(id: string): Promise<Meal>;
     createMeal(createMealDto: CreateMealDto, user: User): Promise<Meal>;
     updateMeal(updateMealDto: UpdateMealDto, id: string, user: User): Promise<Meal>;
+    deleteMeal(id: string, user: User): Promise<{
+        deleted: boolean;
+    }>;
 }
