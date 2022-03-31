@@ -53,7 +53,7 @@ __decorate([
 ], CreateRestaurantDto.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsPhoneNumber)('NG'),
+    (0, class_validator_1.IsPhoneNumber)(),
     __metadata("design:type", Number)
 ], CreateRestaurantDto.prototype, "contactNo", void 0);
 __decorate([

@@ -45,7 +45,7 @@ export class CreateRestaurantDto {
   readonly email: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber('NG')
+  @IsPhoneNumber()
   readonly contactNo: number;
 
   @IsNotEmpty()

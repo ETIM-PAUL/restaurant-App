@@ -16,8 +16,10 @@ const rootReducer = (state: any, actions: { type: any; payload: any }) => {
   switch (actions.type) {
     case "LOGIN":
       return { ...state, user: actions.payload };
-    case "SETUSER":
-      return { ...state, userdetails: actions.payload };
+    case "SETRESTAURANTS":
+      return { ...state, restaurant: actions.payload };
+    case "SETKEYWORD":
+      return { ...state, keyword: actions.payload };
     case "LOGOUT":
       return { ...state, user: null };
 

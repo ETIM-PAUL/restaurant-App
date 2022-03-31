@@ -99,7 +99,8 @@ export const CreateRestaurant = ({ token }) => {
             </Form.Item>
 
             <Form.Item>
-              Phone Number
+              Phone Number (Please make sure you use the nigeria format e.g -
+              090817xxxxx)
               <Input
                 type="number"
                 maxLength={11}

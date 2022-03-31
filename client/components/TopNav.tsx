@@ -20,15 +20,23 @@ import {
 import { GiCoffeeMug } from "react-icons/gi";
 import { BiCoffeeTogo } from "react-icons/bi";
 import { FaCoffee } from "react-icons/fa";
+import Input from "antd/lib/input/Input";
 
 const TopNav = () => {
   const [currentUserId, setCurrentUserId] = useState("");
   const [current, setCurrent] = useState("");
+  const [keyword, setKeyword] = useState("");
 
   const { state, dispatch } = useContext(Context);
 
   const { user } = state;
-  // console.log(data);
+
+  const search = async (value) => {
+    setKeyword(value);
+  };
+  var url = new URL("http://http://localhost:3000/");
+  url.searchParams.append("keyword", keyword);
+  // console.log(url);
 
   useEffect(() => {
     typeof window && setCurrent(window.location.pathname);
@@ -37,7 +45,11 @@ const TopNav = () => {
       const myId = data.userdetails._id;
       setCurrentUserId(myId);
     }
-  }, []);
+    dispatch({
+      type: "SETKEYWORD",
+      payload: keyword,
+    });
+  }, [keyword]);
 
   const logout = async () => {
     try {
@@ -59,6 +71,14 @@ const TopNav = () => {
 
   return (
     <Menu mode="horizontal" selectedKeys={[current]}>
+      <Menu.Item key="search" onClick={(e) => setCurrent(e.key)}>
+        <Input
+          type="search"
+          value={keyword}
+          placeholder="Search For Restaurant"
+          onChange={(e) => search(e.target.value)}
+        />
+      </Menu.Item>
       {user === null && (
         <>
           <Menu.Item
