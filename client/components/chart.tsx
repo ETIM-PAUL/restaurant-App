@@ -19,7 +19,7 @@ const Chart = () => {
   const [allOngoingOrders, setAllOngoingOrders] = useState();
   const [allCompletedOrders, setAllCompletedOrders] = useState();
   const [allDeliveredOrders, setAllDeliveredOrders] = useState();
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState(0);
   const [rest, setRest] = useState([]);
   const [meal, setMeal] = useState([]);
 
