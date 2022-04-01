@@ -28,6 +28,7 @@
     "@nestjs/mongoose": "^9.0.2",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.4.0",
+    "@nestjs/serve-static": "^2.2.2",
     "aws-sdk": "^2.1089.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.2",
@@ -41,6 +42,7 @@
     "node-geocoder": "^4.0.0",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
+    "path": "^0.12.7",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
@@ -87,6 +89,9 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node","modulePaths": ["<rootDir>"]
+    "testEnvironment": "node",
+    "modulePaths": [
+      "<rootDir>"
+    ]
   }
 }

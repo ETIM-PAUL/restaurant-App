@@ -7,7 +7,7 @@ import { FaUserAlt, FaLock } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Router from "next/router";
-import { Context } from "./context/index";
+import { Context } from "context";
 
 const Login = () => {
   const [email, setEmail] = useState("");

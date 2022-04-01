@@ -29,36 +29,37 @@ const Chart = () => {
     // const id = data.userdetails._id;
     if (data) {
       const id = data.userdetails._id;
-    }
-    //get all orders of user
-    const orders = async () => {
-      try {
-        const data = await fetch(`http://localhost:5000/order/user/${id}`).then(
-          (res) => res.json()
-        );
 
-        //map through each order and get the restaurant
-        const p = data.map((x) => x.amount);
-        const pending = data.filter((x) => x.status === "Pending");
-        const ongoing = data.filter((x) => x.status === "Ongoing");
-        const delivered = data.filter((x) => x.status === "Delivered");
-        const completed = data.filter((x) => x.status === "Completed");
-        const uniquep = [...new Set(data.map((x) => x.restaurant))];
-        const uniquem = [...new Set(data.map((x) => x.meal))];
-        const sum = p.reduce((a, b) => a + b);
-        setAllOrders(data);
-        setRest(uniquep);
-        setAmount(sum);
-        setAllPendingOrders(pending.length);
-        setAllOngoingOrders(ongoing.length);
-        setAllCompletedOrders(completed.length);
-        setAllDeliveredOrders(delivered.length);
-        setMeal(uniquem);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    orders();
+      //get all orders of user
+      const orders = async () => {
+        try {
+          const data = await fetch(
+            `http://localhost:5000/order/user/${id}`
+          ).then((res) => res.json());
+
+          //map through each order and get the restaurant
+          const p = data.map((x) => x.amount);
+          const pending = data.filter((x) => x.status === "Pending");
+          const ongoing = data.filter((x) => x.status === "Ongoing");
+          const delivered = data.filter((x) => x.status === "Delivered");
+          const completed = data.filter((x) => x.status === "Completed");
+          const uniquep = [...new Set(data.map((x) => x.restaurant))];
+          const uniquem = [...new Set(data.map((x) => x.meal))];
+          const sum = p.reduce((a, b) => a + b);
+          setAllOrders(data);
+          setRest(uniquep);
+          setAmount(sum);
+          setAllPendingOrders(pending.length);
+          setAllOngoingOrders(ongoing.length);
+          setAllCompletedOrders(completed.length);
+          setAllDeliveredOrders(delivered.length);
+          setMeal(uniquem);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      orders();
+    }
   }, []);
 
   var k = 4;

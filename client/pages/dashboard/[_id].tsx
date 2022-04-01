@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Router from "next/router";
 import { toast } from "react-toastify";
-import { Context } from "../context";
+import { Context } from "context";
 import { CreateRestaurant } from "../../components/create-restaurant";
 import Sidebar from "../../components/sidebar";
 import { useState } from "react";

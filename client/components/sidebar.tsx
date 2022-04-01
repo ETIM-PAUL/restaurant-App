@@ -1,6 +1,6 @@
 import { Badge } from "antd";
 import Link from "next/link";
-import { Context } from "pages/context";
+import { Context } from "context";
 import React, { useContext } from "react";
 import { BiLike } from "react-icons/bi";
 import { BsClipboardCheck } from "react-icons/bs";

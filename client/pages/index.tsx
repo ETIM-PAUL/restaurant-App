@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { Context } from "./context";
+import { Context } from "context";
 
 export async function getServerSideProps({ params }) {
   const res = await fetch("http://localhost:5000/restaurants");
@@ -22,12 +22,10 @@ export async function getServerSideProps({ params }) {
 const HomePage = () => {
   const [restaurants, setRestaurants] = useState([]);
   const { state, dispatch } = useContext(Context);
-  const [keyword, setKeyword] = useState();
   const { Meta } = Card;
 
   useEffect(() => {
     const keyword = state.keyword;
-    console.log(keyword);
     const getRest = async () => {
       const res = await fetch(
         `http://localhost:5000/restaurants?keyword=${keyword}`

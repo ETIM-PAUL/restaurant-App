@@ -8,7 +8,7 @@ import {
   BsPersonFill,
 } from "react-icons/bs";
 import Link from "next/link";
-import { Context } from "pages/context";
+import { Context } from "context";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Router from "next/router";

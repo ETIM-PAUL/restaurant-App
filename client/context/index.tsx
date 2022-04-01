@@ -1,5 +1,3 @@
-import axios from "axios";
-import Router from "next/router";
 import { useReducer, createContext, useEffect } from "react";
 
 //initial state

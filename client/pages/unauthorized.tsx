@@ -3,7 +3,7 @@ import Link from "next/link";
 import Router from "next/router";
 import { useContext } from "react";
 import { useEffect } from "react";
-import { Context } from "./context";
+import { Context } from "context";
 
 const UnAuthorized = () => {
   const {

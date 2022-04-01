@@ -19,7 +19,7 @@ import { GiMeal } from "react-icons/gi";
 import { GetServerSideProps } from "next";
 import { MdRateReview } from "react-icons/md";
 import { toast } from "react-toastify";
-import { Context } from "pages/context";
+import { Context } from "context";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 

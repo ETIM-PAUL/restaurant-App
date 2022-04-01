@@ -16,7 +16,7 @@ import { EnumType } from "typescript";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Router from "next/router";
-import { Context } from "./context";
+import { Context } from "context";
 
 const Login = () => {
   const {

@@ -35,7 +35,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pages/context/index.js", "pages/restaurant/[_id].js", "pages/restaurant/[_id].js", "pages/dashboard.js", "components/manageRest.js"  ],
+, "context/index.jsndex.js", "pages/restaurant/[_id].js", "pages/restaurant/[_id].js", "pages/dashboard.js", "components/manageRest.js"  ],
   "exclude": [
     "node_modules"
   ]

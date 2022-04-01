@@ -4,7 +4,7 @@ import "../public/styles/styles.css";
 import TopNav from "../components/TopNav";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Provider } from "./context/index";
+import { Provider } from "context";
 
 function MyApp({ Component, pageProps }) {
   return (
