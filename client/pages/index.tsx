@@ -6,19 +6,6 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "context";
 
-export async function getServerSideProps({ params }) {
-  const res = await fetch("http://localhost:5000/restaurants");
-  if (!res) {
-    throw new Error(`Error! status: ${res.status}`);
-  }
-  const restaurant = await res.json();
-
-  return {
-    props: {
-      restaurant,
-    },
-  };
-}
 const HomePage = () => {
   const [restaurants, setRestaurants] = useState([]);
   const { state, dispatch } = useContext(Context);

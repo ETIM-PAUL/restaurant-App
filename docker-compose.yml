@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  nestapp:
+    container_name: nestapp
+    image: docklerhubuser/nest-mongo:0.0.1
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    ports:
+      - "5000:5000"
+    env_file:
+      - server/.env.development
+
+  nextapp:
+    container_name: nextapp
+    image: src/client
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    ports:
+      - "3000:3000"
